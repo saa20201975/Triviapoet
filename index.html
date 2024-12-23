@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة الشعر من إعداد صفحة حديقة الشعراء</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .question {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .options button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .options button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .result.correct {
+            color: green;
+        }
+        .result.wrong {
+            color: red;
+        }
+        .score {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>لعبة الشعر من إعداد صفحة حديقة الشعراء</h1>
+        <div id="quiz">
+            <div class="question" id="question"></div>
+            <div class="options">
+                <button onclick="checkAnswer(0)" id="option0"></button>
+                <button onclick="checkAnswer(1)" id="option1"></button>
+                <button onclick="checkAnswer(2)" id="option2"></button>
+            </div>
+            <div class="result" id="result"></div>
+        </div>
+        <div class="score" id="score"></div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "إذا غامرتَ في شرفٍ مرومِ فلا تقنعْ بما دونَ النجومِ",
+                options: ["المتنبي", "أحمد شوقي", "عنترة بن شداد"],
+                answer: 0
+            },
+            {
+                question: "أعزّ مكانٍ في الدُّنا سرجُ سابحٍ وخيرُ جليسٍ في الزمانِ كتابُ",
+                options: ["المتنبي", "محمود درويش", "الشافعي"],
+                answer: 0
+            },
+            {
+                question: "لا تَحْسَبَنَّ المَجْدَ زُقَّةَ راحَةٍ ... ما المَجْدُ إِلّا السَّيْفُ والْفَرَسُ",
+                options: ["عنترة بن شداد", "أبو العلاء المعري", "زهير بن أبي سلمى"],
+                answer: 0
+            },
+            {
+                question: "إذا المرءُ لم يدنس من اللؤم عرضهُ ... فكلُّ رداءٍ يرتديه جميلُ",
+                options: ["زهير بن أبي سلمى", "امرؤ القيس", "الشافعي"],
+                answer: 0
+            },
+            {
+                question: "النفسُ تبكي على الدنيا وقد علمت ... أن السعادة فيها ترك ما فيها",
+                options: ["الإمام علي", "الشافعي", "المتنبي"],
+                answer: 1
+            },
+            {
+                question: "قل للذي بصروف الدهر عيّرنا ... هل عاند الدهر إلا من له خطرُ",
+                options: ["المتنبي", "ابن الرومي", "البحتري"],
+                answer: 0
+            },
+            {
+                question: "ألا ليتَ الشبابَ يعودُ يومًا ... فأخبرهُ بما فعلَ المشيبُ",
+                options: ["أبو العتاهية", "أبو نواس", "عنترة بن شداد"],
+                answer: 0
+            },
+            {
+                question: "إذا كنتَ في كلِّ الأمورِ معاتبًا ... صديقَك لم تلقَ الذي لا تعاتبهُ",
+                options: ["الإمام الشافعي", "زهير بن أبي سلمى", "المتنبي"],
+                answer: 0
+            },
+            {
+                question: "أغركَ مني أن حبكَ قاتلي ... وأنكَ مهما تأمرِ القلبَ يفعلِ",
+                options: ["قيس بن الملوح", "جرير", "عمر بن أبي ربيعة"],
+                answer: 0
+            },
+            {
+                question: "فما كلُّ من تهواهُ يهواكَ قلبُهُ ... ولا كلُّ من صافيتهُ لكَ قد صفا",
+                options: ["علي بن أبي طالب", "الشافعي", "عنترة بن شداد"],
+                answer: 1
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const questionObj = questions[currentQuestion];
+            document.getElementById("question").innerText = questionObj.question;
+            document.getElementById("option0").innerText = questionObj.options[0];
+            document.getElementById("option1").innerText = questionObj.options[1];
+            document.getElementById("option2").innerText = questionObj.options[2];
+            document.getElementById("result").innerText = "";
+        }
+
+        function checkAnswer(option) {
+            const questionObj = questions[currentQuestion];
+            const resultElement = document.getElementById("result");
+
+            if (option === questionObj.answer) {
+                score++;
+                resultElement.innerText = "صواب";
+                resultElement.className = "result correct";
+            } else {
+                resultElement.innerText = "خطأ";
+                resultElement.className = "result wrong";
+            }
+
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                setTimeout(loadQuestion, 1000);
+            } else {
+                setTimeout(() => {
+                    document.getElementById("quiz").innerHTML = `<h2>انتهت اللعبة! مجموعك: ${score} من ${questions.length}</h2>`;
+                    document.getElementById("score").innerHTML = "";
+                }, 1000);
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
